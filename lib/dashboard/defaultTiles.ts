@@ -9,6 +9,8 @@ export type DefaultDashboardTile = {
   href: string;
   iconKey: DashboardIconKey;
   permission?: AppPermission;
+  /** When set, tile requires full (edit) access instead of view */
+  requireFull?: boolean;
 };
 
 export const defaultDashboardTiles: DefaultDashboardTile[] = [
@@ -18,6 +20,7 @@ export const defaultDashboardTiles: DefaultDashboardTile[] = [
     description: "My tasks, onboarding, brainwritings and tracker.",
     href: "/my-workspace",
     iconKey: "users",
+    permission: "onboarding.selectedIntern",
   },
   {
     id: "workspace",
@@ -25,6 +28,7 @@ export const defaultDashboardTiles: DefaultDashboardTile[] = [
     description: "Tasks and approved/up-to-date documents.",
     href: "/workspace",
     iconKey: "folder-kanban",
+    permission: "tasks.companyWide",
   },
   {
     id: "meetings",
@@ -32,6 +36,7 @@ export const defaultDashboardTiles: DefaultDashboardTile[] = [
     description: "Links, recordings and notes pages.",
     href: "/meetings",
     iconKey: "video",
+    permission: "meetings.join",
   },
   {
     id: "timer",
@@ -39,6 +44,7 @@ export const defaultDashboardTiles: DefaultDashboardTile[] = [
     description: "Open detailed time tracking view.",
     href: "/timer",
     iconKey: "timer",
+    permission: "timer.personal",
   },
   {
     id: "chatrooms",
@@ -46,6 +52,7 @@ export const defaultDashboardTiles: DefaultDashboardTile[] = [
     description: "Team channels and direct chats.",
     href: "/chatrooms",
     iconKey: "message-square",
+    permission: "communication.chat",
   },
   {
     id: "teams",
@@ -53,14 +60,23 @@ export const defaultDashboardTiles: DefaultDashboardTile[] = [
     description: "Members directory, filters, and 1:1 chat.",
     href: "/teams",
     iconKey: "users",
+    permission: "teams.directory",
   },
   {
     id: "team-management",
     title: "Team Management",
-    description: "Onboarding and process overview.",
+    description: "Onboarding, evaluation, and member management.",
     href: "/teams",
     iconKey: "shield-check",
-    permission: "view.teamManagement",
+    permission: "teams.management",
+  },
+  {
+    id: "flovault",
+    title: "FloVault",
+    description: "Confidential documents and approvals.",
+    href: "/documents",
+    iconKey: "file-text",
+    permission: "floVault.viewDocuments",
   },
   {
     id: "invoices",
@@ -68,7 +84,7 @@ export const defaultDashboardTiles: DefaultDashboardTile[] = [
     description: "Finance and payouts.",
     href: "/invoices",
     iconKey: "credit-card",
-    permission: "view.invoices",
+    permission: "finance.invoices",
   },
   {
     id: "executive",
@@ -76,6 +92,22 @@ export const defaultDashboardTiles: DefaultDashboardTile[] = [
     description: "System status and performance.",
     href: "/executive",
     iconKey: "bar-chart-3",
-    permission: "view.executive",
+    permission: "projects.progress",
+  },
+  {
+    id: "onboarding",
+    title: "Intern Onboarding",
+    description: "Track all interns progress.",
+    href: "/my-workspace",
+    iconKey: "briefcase",
+    permission: "onboarding.allInternsProgress",
+  },
+  {
+    id: "system-logs",
+    title: "Flo Chronos",
+    description: "System log access.",
+    href: "/executive",
+    iconKey: "sparkles",
+    permission: "management.systemLogs",
   },
 ];

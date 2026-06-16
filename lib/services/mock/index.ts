@@ -13,20 +13,14 @@ import type {
   NotificationService,
   TaskService,
 } from "@/lib/services/contracts";
-
-const currentUser: FloBrainUser = {
-  id: "u-1",
-  name: "Aylin Kaya",
-  email: "aylin@flobrain.local",
-  role: "team-leader",
-  teams: ["Growth", "Design"],
-};
+import { getCurrentUserClient } from "@/lib/auth/demo-session.client-user";
+import { buildMeetingReminderNotifications } from "@/lib/notifications/reminderScheduler";
 
 const tasks: FloBrainTask[] = [
   {
     id: "t-1",
     title: "Finalize launch checklist",
-    assigneeId: "u-1",
+    assigneeId: "u-ceren-g",
     teams: ["Growth"],
     project: "Launch 2026",
     status: "in-progress",
@@ -37,7 +31,7 @@ const tasks: FloBrainTask[] = [
   {
     id: "t-2",
     title: "Design onboarding cards",
-    assigneeId: "u-2",
+    assigneeId: "u-diogo-s",
     teams: ["Design"],
     project: "Onboarding UX",
     status: "todo",
@@ -48,7 +42,7 @@ const tasks: FloBrainTask[] = [
   {
     id: "t-3",
     title: "Review budget summary",
-    assigneeId: "u-3",
+    assigneeId: "u-mohamed-a",
     teams: ["Finance"],
     project: "Q2 Planning",
     status: "done",
@@ -62,7 +56,7 @@ const taskComments: FloBrainTaskComment[] = [
   {
     id: "tc-1",
     taskId: "t-1",
-    authorName: "Aylin Kaya",
+    authorName: "Ceren G.",
     body: "Waiting for final approvals from legal.",
     createdAt: new Date().toISOString(),
   },
@@ -88,15 +82,29 @@ const meetings: MeetingItem[] = [
   { id: "m-2", title: "Project Review", startsAt: "14:00", link: "https://meet.flobrain.local/review" },
 ];
 
-const notifications: NotificationItem[] = [
-  { id: "n-1", title: "Meeting in 10 minutes", body: "Daily Team Sync starts at 09:30", type: "meeting", unread: true },
-  { id: "n-2", title: "Task updated", body: "Design onboarding cards moved to in-progress", type: "general", unread: false },
+const generalNotifications: NotificationItem[] = [
+  {
+    id: "n-2",
+    title: "Task updated",
+    body: "Design onboarding cards moved to in-progress",
+    type: "task",
+    unread: true,
+    href: "/tasks/t-2",
+  },
+  {
+    id: "n-3",
+    title: "New chat message",
+    body: "Diogo sent a message in #design-team",
+    type: "chat",
+    unread: true,
+    href: "/chatrooms",
+  },
 ];
 
 const createId = (prefix: string, listLength: number) => `${prefix}-${listLength + 1}`;
 
 export const authService: AuthService = {
-  getCurrentUser: () => currentUser,
+  getCurrentUser: () => getCurrentUserClient(),
 };
 
 export const taskService: TaskService = {
@@ -182,5 +190,17 @@ export const meetingService: MeetingService = {
 };
 
 export const notificationService: NotificationService = {
-  getNotifications: () => notifications,
+  getNotifications: () => {
+    const meetingReminders = buildMeetingReminderNotifications(meetings);
+    const demoMeetingReminder: NotificationItem = {
+      id: "n-1",
+      title: "Meeting in 10 minutes",
+      body: "Daily Team Sync starts at 09:30",
+      type: "meeting",
+      unread: true,
+      href: meetings[0]?.link ?? "/meetings/links",
+    };
+
+    return [...(meetingReminders.length > 0 ? meetingReminders : [demoMeetingReminder]), ...generalNotifications];
+  },
 };

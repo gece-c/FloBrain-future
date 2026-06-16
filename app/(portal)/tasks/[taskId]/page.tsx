@@ -4,12 +4,13 @@ import { FormEvent, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 
 import { PageShell } from "@/components/layout/PageShell";
-import { authService, taskService } from "@/lib/services/mock";
+import { useCurrentUser } from "@/components/auth/useCurrentUser";
+import { taskService } from "@/lib/services/mock";
 
 export default function TaskDetailPage() {
   const params = useParams<{ taskId: string }>();
   const taskId = params.taskId;
-  const user = useMemo(() => authService.getCurrentUser(), []);
+  const user = useCurrentUser();
 
   const [task, setTask] = useState(() => taskService.getTaskById(taskId));
   const [comments, setComments] = useState(() => taskService.getComments(taskId));

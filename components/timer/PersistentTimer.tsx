@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { navTextControl } from "@/components/layout/nav-controls";
+
 const TASK_OPTIONS = [
   "FloBrain UI Redesign",
   "API Website Refinement and Implementation",
@@ -40,7 +42,7 @@ export function PersistentTimer() {
   return (
     <div className="relative">
       <button
-        className="rounded-xl border border-fuchsia-300/30 bg-white/70 px-3 py-1.5 text-xs font-semibold dark:border-fuchsia-300/20 dark:bg-[#1b0c2d]"
+        className={navTextControl}
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
         aria-label="Open timer panel"
@@ -49,7 +51,7 @@ export function PersistentTimer() {
       </button>
 
       {open ? (
-        <div className="absolute right-0 top-12 z-40 w-80 rounded-2xl border border-fuchsia-300/30 bg-[#230c38] p-3 text-white shadow-2xl">
+        <div className="absolute right-0 top-12 z-40 w-80 rounded-2xl border border-fuchsia-300/30 bg-theme-panel p-3 text-white shadow-2xl">
           <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-fuchsia-200">Active Timer</div>
 
           <label className="mb-2 block text-xs text-fuchsia-100">
@@ -57,10 +59,10 @@ export function PersistentTimer() {
             <select
               value={selectedTask}
               onChange={(event) => setSelectedTask(event.target.value)}
-              className="mt-1 w-full rounded-lg border border-fuchsia-300/40 bg-[#2b1143] px-2 py-2 text-xs text-white outline-none"
+              className="mt-1 w-full rounded-lg border border-fuchsia-300/40 bg-theme-elevated px-2 py-2 text-xs text-white outline-none"
             >
               {TASK_OPTIONS.map((task) => (
-                <option key={task} value={task} className="bg-[#2b1143]">
+                <option key={task} value={task} className="bg-theme-elevated">
                   {task}
                 </option>
               ))}
@@ -72,17 +74,17 @@ export function PersistentTimer() {
             <select
               value={selectedActivity}
               onChange={(event) => setSelectedActivity(event.target.value)}
-              className="mt-1 w-full rounded-lg border border-fuchsia-300/40 bg-[#2b1143] px-2 py-2 text-xs text-white outline-none"
+              className="mt-1 w-full rounded-lg border border-fuchsia-300/40 bg-theme-elevated px-2 py-2 text-xs text-white outline-none"
             >
               {ACTIVITY_OPTIONS.map((activity) => (
-                <option key={activity} value={activity} className="bg-[#2b1143]">
+                <option key={activity} value={activity} className="bg-theme-elevated">
                   {activity}
                 </option>
               ))}
             </select>
           </label>
 
-          <div className="mb-3 rounded-xl bg-[#1a072b] px-3 py-2 text-center text-2xl font-semibold tracking-wider">{timerText}</div>
+          <div className="mb-3 rounded-xl bg-theme-muted px-3 py-2 text-center text-2xl font-semibold tracking-wider">{timerText}</div>
 
           <div className="flex gap-2">
             {!running ? (

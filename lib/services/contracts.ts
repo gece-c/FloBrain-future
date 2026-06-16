@@ -1,4 +1,4 @@
-import type { UserRole } from "@/lib/rbac/permissions";
+import type { AccessGrant, FinanceFeatureToggles, FinanceTier, UserRole } from "@/lib/rbac/permissions";
 
 export type FloBrainUser = {
   id: string;
@@ -6,6 +6,12 @@ export type FloBrainUser = {
   email: string;
   role: UserRole;
   teams: string[];
+  /** Individual Access Based (IAB) grants from higher roles */
+  grants?: AccessGrant[];
+  /** Finance tier for DOT-limited permissions (invoices, etc.) */
+  financeTier?: FinanceTier;
+  /** Per-user finance feature toggles set by admin or system owner */
+  financeToggles?: FinanceFeatureToggles;
 };
 
 export type FloBrainTask = {
@@ -52,12 +58,15 @@ export type MeetingItem = {
   link: string;
 };
 
+export type NotificationType = "meeting" | "task" | "chat" | "document" | "general";
+
 export type NotificationItem = {
   id: string;
   title: string;
   body: string;
-  type: "meeting" | "general";
+  type: NotificationType;
   unread: boolean;
+  href: string;
 };
 
 export interface AuthService {

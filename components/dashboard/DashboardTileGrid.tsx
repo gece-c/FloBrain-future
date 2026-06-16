@@ -9,7 +9,7 @@ import { RoleGate } from "@/components/rbac/RoleGate";
 import { defaultDashboardTiles } from "@/lib/dashboard/defaultTiles";
 import type { CustomDashboardTile, DashboardIconKey } from "@/lib/dashboard/types";
 import { CUSTOM_DASHBOARD_TILES_STORAGE_KEY } from "@/lib/dashboard/types";
-import type { UserRole } from "@/lib/rbac/permissions";
+import type { FloBrainUser } from "@/lib/services/contracts";
 
 function parseCustomTiles(raw: string | null): CustomDashboardTile[] {
   if (!raw) return [];
@@ -41,7 +41,7 @@ function normalizeHref(input: string): string {
 
 const customTileListeners = new Set<() => void>();
 
-/** Raw string last read from localStorage — used so getSnapshot returns a stable array reference unless storage changed. */
+/** Raw string last read from localStorage: used so getSnapshot returns a stable array reference unless storage changed. */
 let lastSeenStorageRaw: string | null | undefined;
 let cachedTilesSnapshot: CustomDashboardTile[] = [];
 
@@ -82,10 +82,10 @@ function writeCustomTiles(tiles: CustomDashboardTile[]) {
 }
 
 type DashboardTileGridProps = {
-  userRole: UserRole;
+  user: FloBrainUser;
 };
 
-export function DashboardTileGrid({ userRole }: DashboardTileGridProps) {
+export function DashboardTileGrid({ user }: DashboardTileGridProps) {
   const customTiles = useSyncExternalStore(subscribeCustomTiles, readStoredCustomTiles, () => []);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -142,14 +142,14 @@ export function DashboardTileGrid({ userRole }: DashboardTileGridProps) {
 
   return (
     <>
-      <section className="grid gap-3 md:grid-cols-3">
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {defaultDashboardTiles.map((tile) => {
           const tileNode = (
             <ModuleTile title={tile.title} description={tile.description} href={tile.href} icon={dashboardIconFor(tile.iconKey)} />
           );
           if (tile.permission) {
             return (
-              <RoleGate key={tile.id} role={userRole} permission={tile.permission}>
+              <RoleGate key={tile.id} user={user} permission={tile.permission} minLevel={tile.requireFull ? "full" : "view"}>
                 {tileNode}
               </RoleGate>
             );
@@ -183,7 +183,7 @@ export function DashboardTileGrid({ userRole }: DashboardTileGridProps) {
 
       <dialog
         ref={dialogRef}
-        className="w-[min(100%,24rem)] rounded-2xl border border-fuchsia-200/50 bg-white p-5 text-zinc-900 shadow-xl backdrop:bg-black/40 dark:border-fuchsia-300/20 dark:bg-[#140824] dark:text-zinc-100"
+        className="w-[min(100%,24rem)] rounded-2xl border border-fuchsia-200/50 bg-theme-panel p-5 text-zinc-900 shadow-xl backdrop:bg-black/40 dark:border-fuchsia-300/20 dark:bg-theme-panel dark:text-zinc-100"
         aria-labelledby={titleId}
         onClose={() => setFormError(null)}
       >
@@ -203,7 +203,7 @@ export function DashboardTileGrid({ userRole }: DashboardTileGridProps) {
               id="dash-tile-title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm outline-none ring-fuchsia-500/30 focus:ring-2 dark:border-zinc-600 dark:bg-[#1b0d30]"
+              className="w-full rounded-lg border border-zinc-200 bg-theme-elevated px-3 py-2 text-sm outline-none ring-fuchsia-500/30 focus:ring-2 dark:border-zinc-600 dark:bg-theme-elevated"
               placeholder="e.g. Q2 roadmap"
               autoComplete="off"
             />
@@ -217,7 +217,7 @@ export function DashboardTileGrid({ userRole }: DashboardTileGridProps) {
               id="dash-tile-desc"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm outline-none ring-fuchsia-500/30 focus:ring-2 dark:border-zinc-600 dark:bg-[#1b0d30]"
+              className="w-full rounded-lg border border-zinc-200 bg-theme-elevated px-3 py-2 text-sm outline-none ring-fuchsia-500/30 focus:ring-2 dark:border-zinc-600 dark:bg-theme-elevated"
               placeholder="Short note"
               autoComplete="off"
             />
@@ -231,7 +231,7 @@ export function DashboardTileGrid({ userRole }: DashboardTileGridProps) {
               id="dash-tile-href"
               value={hrefInput}
               onChange={(e) => setHrefInput(e.target.value)}
-              className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm outline-none ring-fuchsia-500/30 focus:ring-2 dark:border-zinc-600 dark:bg-[#1b0d30]"
+              className="w-full rounded-lg border border-zinc-200 bg-theme-elevated px-3 py-2 text-sm outline-none ring-fuchsia-500/30 focus:ring-2 dark:border-zinc-600 dark:bg-theme-elevated"
               placeholder="/tasks or https://…"
               autoComplete="off"
             />

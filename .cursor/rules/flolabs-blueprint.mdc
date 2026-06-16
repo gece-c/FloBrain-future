@@ -1,0 +1,23 @@
+---
+description: FloLabs master project requirements. Read blueprint.md before every UI/code change
+alwaysApply: true
+---
+
+# FloLabs Blueprint (mandatory)
+
+Before generating or modifying any code in this repository, read the full requirements in `blueprint.md` at the project root.
+
+## Non-negotiable constraints
+
+1. **Copy:** Preserve user-provided text exactly. No em-dashes in UI or copy (use comma or colon). Correct names: FloLabs, CAIPO, FloBrain, MoodChanger, Hephaestus, Flo Chronos.
+2. **Stack:** TypeScript, Next.js App Router, Tailwind CSS. Reuse existing components and design tokens; no unrelated file changes.
+3. **Layout:** 12-column grid (desktop), responsive at 320/768/1024/1440px breakpoints. No horizontal scroll, no fixed widths that break mobile.
+4. **Design:** Clean and professional. No random gradients, neon glows, or crowded sections.
+5. **Typography:** Prevent orphan words (`text-wrap: balance`, `&nbsp;`, or width adjustments).
+6. **Theme:** Full light and dark mode support with readable contrast, visible borders, and no flash on reload.
+7. **Assets:** `public/logo.png` in nav and favicon; `public/og-image.png` (16:9) for OG/Twitter meta tags.
+8. **Icons:** Consistent library and sizing (project uses lucide-react).
+
+## Before marking work complete
+
+Run through the QA checklist in `blueprint.md` Section 13. Summarize what changed, which components were used, and any remaining assumptions.

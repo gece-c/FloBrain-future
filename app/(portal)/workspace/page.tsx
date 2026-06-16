@@ -4,11 +4,16 @@ import Link from "next/link";
 import { ChangeEvent, FormEvent, useMemo, useState } from "react";
 
 import { PageShell } from "@/components/layout/PageShell";
-import { authService, documentsService, taskService } from "@/lib/services/mock";
+import { RoleGate } from "@/components/rbac/RoleGate";
+import { useCurrentUser } from "@/components/auth/useCurrentUser";
+import { canEdit, toAccessContext } from "@/lib/rbac/permissions";
+import { documentsService, taskService } from "@/lib/services/mock";
 type TaskStatusFilter = "all" | "todo" | "in-progress" | "done";
 
 export default function WorkspacePage() {
-  const user = useMemo(() => authService.getCurrentUser(), []);
+  const user = useCurrentUser();
+  const access = useMemo(() => toAccessContext(user), [user]);
+  const canSubmitDocuments = canEdit(access, "floVault.submitDocument");
   const [tasks, setTasks] = useState(() => taskService.getAllTasks());
   const [documents, setDocuments] = useState(() => documentsService.getDocuments());
 
@@ -233,8 +238,32 @@ export default function WorkspacePage() {
           </select>
         </div>
 
-        <div className="mt-3 overflow-hidden rounded-xl border border-fuchsia-200/30 dark:border-fuchsia-300/10">
-          <div className="grid grid-cols-[2fr_1fr_1fr_1fr_auto_auto] gap-2 border-b border-fuchsia-200/30 bg-white/40 px-3 py-2 text-xs font-semibold dark:border-fuchsia-300/10 dark:bg-white/5">
+        <div className="mt-3 space-y-2 lg:hidden">
+          {filteredTasks.map((task) => (
+            <article key={task.id} className="border-subtle rounded-xl border p-3 text-sm">
+              <p className="font-medium">{task.title}</p>
+              <p className="mt-1 text-xs text-zinc-500">
+                {task.teams.join(", ")} · {task.project} · {task.status}
+              </p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <Link href={`/tasks/${task.id}`} className="border-subtle min-h-11 rounded-lg border px-3 py-2 text-xs">
+                  Open page
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => cycleTaskStatus(task.id, task.status)}
+                  className="border-subtle min-h-11 rounded-lg border px-3 py-2 text-xs"
+                >
+                  Change status
+                </button>
+              </div>
+            </article>
+          ))}
+          {filteredTasks.length === 0 ? <p className="text-sm text-zinc-500">No tasks match the current filters.</p> : null}
+        </div>
+
+        <div className="border-subtle mt-3 hidden overflow-hidden rounded-xl border lg:block">
+          <div className="border-subtle bg-elevated grid grid-cols-[2fr_1fr_1fr_1fr_auto_auto] gap-2 border-b px-3 py-2 text-xs font-semibold">
             <span>Task</span>
             <span>Teams</span>
             <span>Project</span>
@@ -243,15 +272,18 @@ export default function WorkspacePage() {
             <span>Action</span>
           </div>
           {filteredTasks.map((task) => (
-            <div key={task.id} className="grid grid-cols-[2fr_1fr_1fr_1fr_auto_auto] items-center gap-2 border-b border-fuchsia-200/20 px-3 py-2 text-sm last:border-b-0 dark:border-fuchsia-300/10">
+            <div
+              key={task.id}
+              className="border-subtle grid grid-cols-[2fr_1fr_1fr_1fr_auto_auto] items-center gap-2 border-b px-3 py-2 text-sm last:border-b-0"
+            >
               <span>{task.title}</span>
               <span className="text-zinc-500">{task.teams.join(", ")}</span>
               <span className="text-zinc-500">{task.project}</span>
               <span className="text-zinc-500">{task.status}</span>
-              <Link href={`/tasks/${task.id}`} className="rounded-lg border border-fuchsia-300/40 px-2 py-1 text-xs text-center">
+              <Link href={`/tasks/${task.id}`} className="border-subtle rounded-lg border px-2 py-1 text-center text-xs">
                 Open page
               </Link>
-              <button type="button" onClick={() => cycleTaskStatus(task.id, task.status)} className="rounded-lg border border-fuchsia-300/40 px-2 py-1 text-xs">
+              <button type="button" onClick={() => cycleTaskStatus(task.id, task.status)} className="border-subtle rounded-lg border px-2 py-1 text-xs">
                 Change status
               </button>
             </div>
@@ -261,30 +293,36 @@ export default function WorkspacePage() {
       </PageShell>
 
       <PageShell title="Documents / Files" description="Upload documents or paste external links (Google Docs, Word, Miro, Canva, etc).">
-        <div className="grid gap-3 md:grid-cols-2">
-          <div className="rounded-xl border border-fuchsia-200/30 p-3 dark:border-fuchsia-300/10">
-            <p className="text-sm font-semibold">Upload file</p>
-            <label className="mt-2 inline-flex cursor-pointer rounded-lg border border-fuchsia-300/40 px-3 py-2 text-sm">
-              Upload document
-              <input type="file" onChange={handleUploadDocument} className="hidden" />
-            </label>
-          </div>
-
-          <form onSubmit={handleAddDocumentLink} className="rounded-xl border border-fuchsia-200/30 p-3 dark:border-fuchsia-300/10">
-            <p className="text-sm font-semibold">Paste link</p>
-            <div className="mt-2 flex gap-2">
-              <input
-                value={documentLink}
-                onChange={(event) => setDocumentLink(event.target.value)}
-                className="min-w-40 flex-1 rounded-lg border border-fuchsia-300/30 bg-transparent px-3 py-2 text-sm"
-                placeholder="https://..."
-              />
-              <button type="submit" className="rounded-lg border border-fuchsia-300/40 px-3 py-2 text-sm">
-                Add link
-              </button>
+        <RoleGate user={user} permission="floVault.submitDocument" minLevel="full">
+          <div className="grid gap-3 md:grid-cols-2">
+            <div className="rounded-xl border border-fuchsia-200/30 p-3 dark:border-fuchsia-300/10">
+              <p className="text-sm font-semibold">Upload file</p>
+              <label className="mt-2 inline-flex cursor-pointer rounded-lg border border-fuchsia-300/40 px-3 py-2 text-sm">
+                Upload document
+                <input type="file" onChange={handleUploadDocument} className="hidden" />
+              </label>
             </div>
-          </form>
-        </div>
+
+            <form onSubmit={handleAddDocumentLink} className="rounded-xl border border-fuchsia-200/30 p-3 dark:border-fuchsia-300/10">
+              <p className="text-sm font-semibold">Paste link</p>
+              <div className="mt-2 flex gap-2">
+                <input
+                  value={documentLink}
+                  onChange={(event) => setDocumentLink(event.target.value)}
+                  className="min-w-40 flex-1 rounded-lg border border-fuchsia-300/30 bg-transparent px-3 py-2 text-sm"
+                  placeholder="https://..."
+                />
+                <button type="submit" className="rounded-lg border border-fuchsia-300/40 px-3 py-2 text-sm">
+                  Add link
+                </button>
+              </div>
+            </form>
+          </div>
+        </RoleGate>
+
+        {!canSubmitDocuments ? (
+          <p className="text-sm text-zinc-500">Document submission is not available for your role.</p>
+        ) : null}
 
         <div className="mt-3 space-y-2">
           {documents.map((doc) => (

@@ -3,23 +3,86 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #f8f4ff;
-  --foreground: #21002e;
-  --surface: #ffffff;
+  --accent-50: #fdf4ff;
+  --accent-100: #fae8ff;
+  --accent-200: #f5d0fe;
+  --accent-300: #f0abfc;
+  --accent-400: #e879f9;
+  --accent-500: #d946ef;
+  --accent-600: #c026d3;
+  --accent-700: #a21caf;
+  --accent-800: #86198f;
+  --accent-900: #701a75;
+  --theme-background-light: #f3e8ff;
+  --theme-gradient-end-light: #ede0ff;
+  --theme-panel-light: #f5e8ff;
+  --theme-elevated-light: #f9f0ff;
+  --theme-muted-light: #fae8ff;
+  --theme-hover-light: #fdf4ff;
+  --theme-sidebar-light: #f5efff;
+  --theme-interactive-light: #fae8ff;
+  --theme-foreground-light: #21002e;
+  --theme-background-dark: #21002e;
+  --theme-surface-dark: #0e091a;
+  --theme-sidebar-dark: #120720;
+  --theme-panel-dark: #140824;
+  --theme-elevated-dark: #1b0c2d;
+  --theme-muted-dark: #2a1142;
+  --theme-hover-dark: #251237;
+  --theme-navbar-dark: #0e091a;
+  --theme-interactive-dark: #1b0c2d;
+  --theme-foreground-dark: #f5edff;
+  --theme-panel: var(--theme-panel-light);
+  --theme-elevated: var(--theme-elevated-light);
+  --theme-muted: var(--theme-muted-light);
+  --theme-hover: var(--theme-hover-light);
+  --theme-sidebar: var(--theme-sidebar-light);
+  --theme-navbar: var(--theme-panel-light);
+  --theme-interactive: var(--theme-interactive-light);
+  --theme-border-subtle: color-mix(in srgb, var(--accent-300) 32%, transparent);
+  --background: var(--theme-background-light);
+  --foreground: var(--theme-foreground-light);
+  --surface: var(--theme-elevated-light);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
+  --color-theme-panel: var(--theme-panel);
+  --color-theme-elevated: var(--theme-elevated);
+  --color-theme-muted: var(--theme-muted);
+  --color-theme-hover: var(--theme-hover);
+  --color-theme-sidebar: var(--theme-sidebar);
+  --color-theme-navbar: var(--theme-navbar);
+  --color-theme-interactive: var(--theme-interactive);
+  --color-subtle: var(--theme-border-subtle);
+  --color-fuchsia-50: var(--accent-50);
+  --color-fuchsia-100: var(--accent-100);
+  --color-fuchsia-200: var(--accent-200);
+  --color-fuchsia-300: var(--accent-300);
+  --color-fuchsia-400: var(--accent-400);
+  --color-fuchsia-500: var(--accent-500);
+  --color-fuchsia-600: var(--accent-600);
+  --color-fuchsia-700: var(--accent-700);
+  --color-fuchsia-800: var(--accent-800);
+  --color-fuchsia-900: var(--accent-900);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 .dark {
-  --background: #21002e;
-  --foreground: #f5edff;
-  --surface: #0e091a;
+  --theme-panel: var(--theme-panel-dark);
+  --theme-elevated: var(--theme-elevated-dark);
+  --theme-muted: var(--theme-muted-dark);
+  --theme-hover: var(--theme-hover-dark);
+  --theme-sidebar: var(--theme-sidebar-dark);
+  --theme-navbar: var(--theme-navbar-dark);
+  --theme-interactive: var(--theme-interactive-dark);
+  --theme-border-subtle: color-mix(in srgb, var(--accent-400) 22%, transparent);
+  --background: var(--theme-background-dark);
+  --foreground: var(--theme-foreground-dark);
+  --surface: var(--theme-surface-dark);
 }
 
 html {
@@ -29,7 +92,39 @@ html {
 
 body {
   min-height: 100dvh;
-  background: var(--background);
+  background: linear-gradient(
+    135deg,
+    var(--theme-background-light) 0%,
+    var(--theme-gradient-end-light) 100%
+  );
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+.dark body {
+  background: linear-gradient(
+    135deg,
+    var(--theme-background-dark) 0%,
+    var(--theme-surface-dark) 100%
+  );
+}
+
+@utility bg-elevated {
+  background-color: var(--theme-elevated);
+}
+
+@utility bg-interactive {
+  background-color: var(--theme-interactive);
+}
+
+@utility bg-elevated-hover {
+  background-color: var(--theme-hover);
+}
+
+@utility bg-interactive-hover {
+  background-color: var(--theme-hover);
+}
+
+@utility border-subtle {
+  border-color: var(--theme-border-subtle);
 }

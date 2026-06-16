@@ -1,16 +1,16 @@
+import { AccessGate } from "@/components/rbac/AccessGate";
 import { PageShell } from "@/components/layout/PageShell";
-import { RoleGate } from "@/components/rbac/RoleGate";
-import { authService } from "@/lib/services/mock";
+import { getCurrentUser } from "@/lib/auth/demo-session.server";
 
-export default function InvoicesPage() {
-  const user = authService.getCurrentUser();
+export default async function InvoicesPage() {
+  const user = await getCurrentUser();
   return (
-    <RoleGate role={user.role} permission="view.invoices">
-      <PageShell title="Invoices / Payments" description="Executive-only finance visibility.">
+    <AccessGate user={user} permission="finance.invoices">
+      <PageShell title="Invoices / Payments" description="Finance visibility based on your role and tier.">
         <div className="rounded-xl border border-fuchsia-200/30 p-3 text-sm dark:border-fuchsia-300/10">
           Billing and payouts module placeholder.
         </div>
       </PageShell>
-    </RoleGate>
+    </AccessGate>
   );
 }
