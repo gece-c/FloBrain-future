@@ -44,6 +44,11 @@ const customTileListeners = new Set<() => void>();
 /** Raw string last read from localStorage: used so getSnapshot returns a stable array reference unless storage changed. */
 let lastSeenStorageRaw: string | null | undefined;
 let cachedTilesSnapshot: CustomDashboardTile[] = [];
+const serverCustomTilesSnapshot: CustomDashboardTile[] = [];
+
+function getServerCustomTiles(): CustomDashboardTile[] {
+  return serverCustomTilesSnapshot;
+}
 
 function readStoredCustomTiles(): CustomDashboardTile[] {
   const raw = window.localStorage.getItem(CUSTOM_DASHBOARD_TILES_STORAGE_KEY);
@@ -86,7 +91,7 @@ type DashboardTileGridProps = {
 };
 
 export function DashboardTileGrid({ user }: DashboardTileGridProps) {
-  const customTiles = useSyncExternalStore(subscribeCustomTiles, readStoredCustomTiles, () => []);
+  const customTiles = useSyncExternalStore(subscribeCustomTiles, readStoredCustomTiles, getServerCustomTiles);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const [title, setTitle] = useState("");

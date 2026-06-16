@@ -128,3 +128,13 @@ body {
 @utility border-subtle {
   border-color: var(--theme-border-subtle);
 }
+
+.logo-mark {
+  filter:
+    drop-shadow(0 0 0.5px var(--theme-foreground-light))
+    drop-shadow(0 0 0.5px var(--theme-foreground-light));
+}
+
+.dark .logo-mark {
+  filter: none;
+}

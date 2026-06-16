@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 import { DEMO_USER_COOKIE } from "@/lib/demo/users";
 
-const PUBLIC_PATHS = new Set(["/", "/login", "/signup"]);
+const PUBLIC_PATHS = new Set(["/", "/login", "/signup", "/icon", "/apple-icon"]);
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -20,5 +20,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|icon|apple-icon).*)"],
 };

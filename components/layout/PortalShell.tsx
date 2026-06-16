@@ -6,7 +6,6 @@ import { useState } from "react";
 import { GridContainer } from "@/components/layout/GridContainer";
 import { PrimaryTabs } from "@/components/layout/PrimaryTabs";
 import { Sidebar } from "@/components/layout/Sidebar";
-import { SiteFooter } from "@/components/layout/SiteFooter";
 import { TopNavbar } from "@/components/layout/TopNavbar";
 import type { FloBrainUser } from "@/lib/services/contracts";
 
@@ -31,7 +30,6 @@ export function PortalShell({ user, children }: PortalShellProps) {
             </div>
           </GridContainer>
         </main>
-        <SiteFooter />
       </div>
       {mobileNavOpen ? (
         <button

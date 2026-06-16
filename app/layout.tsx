@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ColorThemeScript } from "@/components/layout/ColorThemeScript";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ThemeScript } from "@/components/layout/ThemeScript";
+import { LOGO_APPLE_ICON_PATH, LOGO_ICON_PATH } from "@/lib/brand/constants";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,9 +26,9 @@ export const metadata: Metadata = {
   title: siteTitle,
   description: siteDescription,
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: LOGO_ICON_PATH,
+    shortcut: LOGO_ICON_PATH,
+    apple: LOGO_APPLE_ICON_PATH,
   },
   openGraph: {
     title: siteTitle,
