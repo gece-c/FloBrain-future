@@ -1,9 +1,11 @@
-import { DEFAULT_DEMO_USER_ID, getDemoUser } from "@/lib/demo/users";
+import { cookies } from "next/headers";
+
+import { DEFAULT_DEMO_USER_ID, DEMO_USER_COOKIE, getDemoUser } from "@/lib/demo/users";
 import type { FloBrainUser } from "@/lib/services/contracts";
 
-/** Static export has no server cookies; client auth resolves after hydration. */
 export async function getDemoUserIdServer(): Promise<string> {
-  return DEFAULT_DEMO_USER_ID;
+  const store = await cookies();
+  return store.get(DEMO_USER_COOKIE)?.value ?? DEFAULT_DEMO_USER_ID;
 }
 
 export async function getCurrentUser(): Promise<FloBrainUser> {

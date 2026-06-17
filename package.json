@@ -2,7 +2,6 @@
   "name": "flobrain",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://gece-c.github.io/FloBrain-future/",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

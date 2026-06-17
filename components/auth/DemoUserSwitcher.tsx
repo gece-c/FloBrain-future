@@ -5,7 +5,7 @@ import { useState, useTransition } from "react";
 import { ChevronDown, Users } from "lucide-react";
 
 import { navTextControl } from "@/components/layout/nav-controls";
-import { setDemoUserClient } from "@/lib/auth/demo-auth.client";
+import { setDemoUser } from "@/app/actions/demo-auth";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { notifyDemoUserChanged } from "@/components/auth/useCurrentUser";
 import { demoUserPersonas, roleAccent } from "@/lib/demo/users";
@@ -28,8 +28,8 @@ export function DemoUserSwitcher({ user }: DemoUserSwitcherProps) {
       setOpen(false);
       return;
     }
-    startTransition(() => {
-      setDemoUserClient(demoId);
+    startTransition(async () => {
+      await setDemoUser(demoId);
       notifyDemoUserChanged();
       router.refresh();
       setOpen(false);

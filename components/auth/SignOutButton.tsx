@@ -3,7 +3,7 @@
 import { LogOut } from "lucide-react";
 import { useTransition } from "react";
 
-import { logoutDemoUserClient } from "@/lib/auth/demo-auth.client";
+import { logoutDemoUser } from "@/app/actions/demo-auth";
 
 type SignOutButtonProps = {
   variant?: "default" | "sidebar" | "danger" | "menu";
@@ -33,7 +33,7 @@ export function SignOutButton({
     <button
       type="button"
       disabled={pending}
-      onClick={() => startTransition(() => logoutDemoUserClient())}
+      onClick={() => startTransition(() => void logoutDemoUser())}
       className={`${variantClass} disabled:opacity-60 ${className}`}
       aria-label={label || "Sign out"}
     >

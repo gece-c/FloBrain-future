@@ -1,14 +1,15 @@
 import type { NextConfig } from "next";
 
-import { SITE_BASE_PATH } from "./lib/site-path";
+import { LOGO_ICON_PATH } from "./lib/brand/constants";
 
 const nextConfig: NextConfig = {
-  output: "export",
-  basePath: SITE_BASE_PATH,
-  assetPrefix: `${SITE_BASE_PATH}/`,
-  trailingSlash: true,
-  images: {
-    unoptimized: true,
+  async rewrites() {
+    return [
+      {
+        source: "/favicon.ico",
+        destination: LOGO_ICON_PATH,
+      },
+    ];
   },
 };
 

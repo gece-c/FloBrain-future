@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 
-import { loginAsDemoUserClient } from "@/lib/auth/demo-auth.client";
+import { loginAsDemoUser } from "@/app/actions/demo-auth";
 import { demoUserPersonas, roleAccent } from "@/lib/demo/users";
 import { ROLE_LABELS } from "@/lib/rbac/permissions";
 
@@ -11,7 +11,7 @@ export function DemoLoginPicker() {
 
   const handleLogin = (demoId: string) => {
     startTransition(() => {
-      loginAsDemoUserClient(demoId);
+      void loginAsDemoUser(demoId);
     });
   };
 

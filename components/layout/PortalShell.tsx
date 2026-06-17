@@ -7,14 +7,14 @@ import { GridContainer } from "@/components/layout/GridContainer";
 import { PrimaryTabs } from "@/components/layout/PrimaryTabs";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { TopNavbar } from "@/components/layout/TopNavbar";
-import { useCurrentUser } from "@/components/auth/useCurrentUser";
+import type { FloBrainUser } from "@/lib/services/contracts";
 
 type PortalShellProps = {
+  user: FloBrainUser;
   children: ReactNode;
 };
 
-export function PortalShell({ children }: PortalShellProps) {
-  const user = useCurrentUser();
+export function PortalShell({ user, children }: PortalShellProps) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
