@@ -22,7 +22,9 @@ const siteDescription =
   "FloBrain is the FloLabs team operating portal for tasks, chat, documents, and workspace tools in one place.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://gece-c.github.io/FloBrain-future",
+  ),
   title: siteTitle,
   description: siteDescription,
   icons: {
