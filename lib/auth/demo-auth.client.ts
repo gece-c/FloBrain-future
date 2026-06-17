@@ -1,16 +1,16 @@
 "use client";
 
 import { DEMO_USER_COOKIE, getDemoPersona } from "@/lib/demo/users";
-import { toAppPath } from "@/lib/site-path";
+import { SITE_BASE_PATH, toAppPath } from "@/lib/site-path";
 
 const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
 
 function setDemoUserCookie(demoId: string) {
-  document.cookie = `${DEMO_USER_COOKIE}=${encodeURIComponent(demoId)}; path=/; max-age=${COOKIE_MAX_AGE_SECONDS}; samesite=lax`;
+  document.cookie = `${DEMO_USER_COOKIE}=${encodeURIComponent(demoId)}; path=${SITE_BASE_PATH}/; max-age=${COOKIE_MAX_AGE_SECONDS}; samesite=lax`;
 }
 
 function clearDemoUserCookie() {
-  document.cookie = `${DEMO_USER_COOKIE}=; path=/; max-age=0; samesite=lax`;
+  document.cookie = `${DEMO_USER_COOKIE}=; path=${SITE_BASE_PATH}/; max-age=0; samesite=lax`;
 }
 
 export function setDemoUserClient(demoId: string) {
