@@ -1,11 +1,13 @@
+"use client";
+
 import { AccessGate } from "@/components/rbac/AccessGate";
 import { RoleGate } from "@/components/rbac/RoleGate";
 import { PageShell } from "@/components/layout/PageShell";
-import { getCurrentUser } from "@/lib/auth/demo-session.server";
+import { useCurrentUser } from "@/components/auth/useCurrentUser";
 import { documentsService } from "@/lib/services/mock";
 
-export default async function DocumentsPage() {
-  const user = await getCurrentUser();
+export default function DocumentsPage() {
+  const user = useCurrentUser();
   const docs = documentsService.getDocuments();
 
   return (

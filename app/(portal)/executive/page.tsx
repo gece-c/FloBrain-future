@@ -1,9 +1,12 @@
+"use client";
+
 import { AccessGate } from "@/components/rbac/AccessGate";
 import { PageShell } from "@/components/layout/PageShell";
-import { getCurrentUser } from "@/lib/auth/demo-session.server";
+import { useCurrentUser } from "@/components/auth/useCurrentUser";
 
-export default async function ExecutivePage() {
-  const user = await getCurrentUser();
+export default function ExecutivePage() {
+  const user = useCurrentUser();
+
   return (
     <AccessGate user={user} permission="projects.progress">
       <PageShell title="Executive Metrics" description="System status, project progress and performance metrics.">

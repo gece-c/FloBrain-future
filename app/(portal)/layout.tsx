@@ -1,10 +1,14 @@
+"use client";
+
 import type { ReactNode } from "react";
 
+import { PortalAuthGate } from "@/components/auth/PortalAuthGate";
 import { PortalShell } from "@/components/layout/PortalShell";
-import { getCurrentUser } from "@/lib/auth/demo-session.server";
 
-export default async function PortalLayout({ children }: { children: ReactNode }) {
-  const user = await getCurrentUser();
-
-  return <PortalShell user={user}>{children}</PortalShell>;
+export default function PortalLayout({ children }: { children: ReactNode }) {
+  return (
+    <PortalAuthGate>
+      <PortalShell>{children}</PortalShell>
+    </PortalAuthGate>
+  );
 }

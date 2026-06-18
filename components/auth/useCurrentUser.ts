@@ -3,7 +3,7 @@
 import { useCallback, useSyncExternalStore } from "react";
 
 import { DEMO_USER_CHANGED_EVENT } from "@/lib/auth/demo-session.client";
-import { getCurrentUserClient } from "@/lib/auth/demo-session.client-user";
+import { getCurrentUserClient, getDefaultUserClient } from "@/lib/auth/demo-session.client-user";
 import type { FloBrainUser } from "@/lib/services/contracts";
 
 function subscribe(onStoreChange: () => void) {
@@ -17,7 +17,7 @@ function getSnapshot(): FloBrainUser {
 }
 
 function getServerSnapshot(): FloBrainUser {
-  return getCurrentUserClient();
+  return getDefaultUserClient();
 }
 
 export function notifyDemoUserChanged() {

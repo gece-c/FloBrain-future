@@ -1,9 +1,11 @@
+"use client";
+
 import Link from "next/link";
 
 import { AccessGate } from "@/components/rbac/AccessGate";
 import { RoleGate } from "@/components/rbac/RoleGate";
 import { PageShell } from "@/components/layout/PageShell";
-import { getCurrentUser } from "@/lib/auth/demo-session.server";
+import { useCurrentUser } from "@/components/auth/useCurrentUser";
 import { ROLE_LABELS, normalizeRole, type UserRole } from "@/lib/rbac/permissions";
 import { getTeamDirectoryMembers } from "@/lib/demo/users";
 
@@ -11,8 +13,8 @@ const members = getTeamDirectoryMembers();
 
 const roleFilterOptions: UserRole[] = ["system-owner", "admin", "team-lead", "team-member"];
 
-export default async function TeamsPage() {
-  const user = await getCurrentUser();
+export default function TeamsPage() {
+  const user = useCurrentUser();
 
   return (
     <AccessGate user={user} permission="teams.directory">

@@ -1,9 +1,11 @@
+"use client";
+
 import Link from "next/link";
 
 import { AccessGate } from "@/components/rbac/AccessGate";
 import { RoleGate } from "@/components/rbac/RoleGate";
 import { PageShell } from "@/components/layout/PageShell";
-import { getCurrentUser } from "@/lib/auth/demo-session.server";
+import { useCurrentUser } from "@/components/auth/useCurrentUser";
 
 const sections = [
   { label: "Meeting Links", href: "/meetings/links" },
@@ -11,8 +13,8 @@ const sections = [
   { label: "Meeting Notes", href: "/meetings/notes", permission: "meetings.teamNotes" as const },
 ];
 
-export default async function MeetingsPage() {
-  const user = await getCurrentUser();
+export default function MeetingsPage() {
+  const user = useCurrentUser();
 
   return (
     <AccessGate user={user} permission="meetings.join">

@@ -1,10 +1,12 @@
+"use client";
+
 import { AccessGate } from "@/components/rbac/AccessGate";
 import { RoleGate } from "@/components/rbac/RoleGate";
 import { PageShell } from "@/components/layout/PageShell";
-import { getCurrentUser } from "@/lib/auth/demo-session.server";
+import { useCurrentUser } from "@/components/auth/useCurrentUser";
 
-export default async function TimerPage() {
-  const user = await getCurrentUser();
+export default function TimerPage() {
+  const user = useCurrentUser();
 
   return (
     <AccessGate user={user} permission="timer.personal">

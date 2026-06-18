@@ -1,18 +1,18 @@
+"use client";
+
 import { AccessGate } from "@/components/rbac/AccessGate";
 import { ChatRoomsWorkspace } from "@/components/chatrooms/ChatRoomsWorkspace";
+import { useCurrentUser } from "@/components/auth/useCurrentUser";
 import { getAccessibleRooms } from "@/lib/chat/access";
 import { chatRooms } from "@/lib/chat/data";
 import { getChatMembers } from "@/lib/chat/members";
-import { getCurrentUser } from "@/lib/auth/demo-session.server";
 import { canView, toAccessContext } from "@/lib/rbac/permissions";
+import { useParams } from "next/navigation";
 
-type DirectChatPageProps = {
-  params: Promise<{ userId: string }>;
-};
-
-export default async function DirectChatPage({ params }: DirectChatPageProps) {
-  const { userId } = await params;
-  const user = await getCurrentUser();
+export default function DirectChatPage() {
+  const params = useParams<{ userId: string }>();
+  const userId = params.userId;
+  const user = useCurrentUser();
   const accessibleRooms = getAccessibleRooms(user, chatRooms);
   const members = getChatMembers();
   const canSearch = canView(toAccessContext(user), "communication.roomSearch");

@@ -1,15 +1,19 @@
 import type { NextConfig } from "next";
 
-import { LOGO_ICON_PATH } from "./lib/brand/constants";
+const isGithubPages = process.env.GITHUB_PAGES === "true";
+const githubPagesBasePath = process.env.GITHUB_PAGES_BASE_PATH ?? "/FloBrain-future";
 
 const nextConfig: NextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: "/favicon.ico",
-        destination: LOGO_ICON_PATH,
-      },
-    ];
+  ...(isGithubPages
+    ? {
+        output: "export",
+        basePath: githubPagesBasePath,
+        assetPrefix: githubPagesBasePath,
+        trailingSlash: true,
+      }
+    : {}),
+  images: {
+    unoptimized: true,
   },
 };
 

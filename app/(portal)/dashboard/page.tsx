@@ -1,9 +1,11 @@
+"use client";
+
 import { DashboardTileGrid } from "@/components/dashboard/DashboardTileGrid";
-import { getCurrentUser } from "@/lib/auth/demo-session.server";
+import { useCurrentUser } from "@/components/auth/useCurrentUser";
 import { ROLE_LABELS } from "@/lib/rbac/permissions";
 
-export default async function DashboardPage() {
-  const user = await getCurrentUser();
+export default function DashboardPage() {
+  const user = useCurrentUser();
 
   return (
     <div className="space-y-4">

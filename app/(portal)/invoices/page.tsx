@@ -1,9 +1,12 @@
+"use client";
+
 import { AccessGate } from "@/components/rbac/AccessGate";
 import { PageShell } from "@/components/layout/PageShell";
-import { getCurrentUser } from "@/lib/auth/demo-session.server";
+import { useCurrentUser } from "@/components/auth/useCurrentUser";
 
-export default async function InvoicesPage() {
-  const user = await getCurrentUser();
+export default function InvoicesPage() {
+  const user = useCurrentUser();
+
   return (
     <AccessGate user={user} permission="finance.invoices">
       <PageShell title="Invoices / Payments" description="Finance visibility based on your role and tier.">

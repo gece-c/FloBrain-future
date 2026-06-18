@@ -1,10 +1,12 @@
+"use client";
+
 import { PageShell } from "@/components/layout/PageShell";
 import { ProfileActions } from "@/components/profile/ProfileActions";
+import { useCurrentUser } from "@/components/auth/useCurrentUser";
 import { getAccess, ROLE_LABELS, toAccessContext } from "@/lib/rbac/permissions";
-import { getCurrentUser } from "@/lib/auth/demo-session.server";
 
-export default async function ProfilePage() {
-  const user = await getCurrentUser();
+export default function ProfilePage() {
+  const user = useCurrentUser();
   const context = toAccessContext(user);
 
   return (

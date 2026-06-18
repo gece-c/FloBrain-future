@@ -1,9 +1,11 @@
+"use client";
+
 import { PageShell } from "@/components/layout/PageShell";
-import { getCurrentUser } from "@/lib/auth/demo-session.server";
+import { useCurrentUser } from "@/components/auth/useCurrentUser";
 import { taskService } from "@/lib/services/mock";
 
-export default async function MyWorkspacePage() {
-  const user = await getCurrentUser();
+export default function MyWorkspacePage() {
+  const user = useCurrentUser();
   const myTasks = taskService.getAllTasks().filter((task) => task.assigneeId === user.id);
 
   return (
